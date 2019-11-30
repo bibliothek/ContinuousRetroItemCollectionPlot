@@ -11,10 +11,11 @@ export class AppComponent {
 
   arrayBuffer: any;
 
+  sheetData: any;
+
   public fileChanged(event): void {
 
     const file = event.target.files[0];
-    console.log(file);
 
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
@@ -23,10 +24,11 @@ export class AppComponent {
       var arr = new Array();
       for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
       var bstr = arr.join("");
-      var workbook = XLSX.read(bstr, { type: "binary" });
+      var workbook = XLSX.read(bstr, {type:'binary', cellDates:true, cellNF: false, cellText:false});
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
-      console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
+      this.sheetData = XLSX.utils.sheet_to_json(worksheet, {dateNF:"YYYY-MM-DD"})
+      console.log(this.sheetData);
     }
     fileReader.readAsArrayBuffer(file);
   }

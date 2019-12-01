@@ -13,6 +13,10 @@ export class AppComponent {
 
   sheetData: any;
 
+  x: Array<any>;
+  y: Array<any>;
+  labels: Array<any>;
+
   public fileChanged(event): void {
 
     const file = event.target.files[0];
@@ -28,7 +32,20 @@ export class AppComponent {
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
       this.sheetData = XLSX.utils.sheet_to_json(worksheet, {dateNF:"YYYY-MM-DD"})
-      console.log(this.sheetData);
+
+      this.x = [];
+      this.y = [];
+      this.labels = [];
+
+      for(let entry of this.sheetData)  {
+        this.x.push(entry['Fertigstellungszeit']);
+        this.y.push(entry['What is your mood today?']);
+        let label = entry['Name'] + ': ' + entry['What made you feel that way?']
+        this.labels.push(label);
+      }
+      console.log(this.x);
+      console.log(this.y);
+      console.log(this.labels);
     }
     fileReader.readAsArrayBuffer(file);
   }

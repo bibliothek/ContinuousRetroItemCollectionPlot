@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -16,6 +16,14 @@ export class AppComponent {
   x: Array<any>;
   y: Array<any>;
   labels: Array<any>;
+
+  public graph = {
+    data: []
+};
+
+  // @ViewChild("Graph", { static: true })
+  // private Graph: ElementRef; 
+
 
   public fileChanged(event): void {
 
@@ -43,9 +51,15 @@ export class AppComponent {
         let label = entry['Name'] + ': ' + entry['What made you feel that way?']
         this.labels.push(label);
       }
-      console.log(this.x);
-      console.log(this.y);
-      console.log(this.labels);
+      const trace = {
+        x: this.x,
+        y: this.y,
+        textposition: 'top center',
+        mode: 'markers',
+        type: 'scatter',
+        text: this.labels
+      }
+      this.graph.data = [trace];
     }
     fileReader.readAsArrayBuffer(file);
   }

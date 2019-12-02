@@ -9,14 +9,6 @@ import * as XLSX from 'xlsx';
 export class AppComponent {
   title = 'excel-to-chart';
 
-  arrayBuffer: any;
-
-  sheetData: any;
-
-  x: Array<any>;
-  y: Array<any>;
-  labels: Array<any>;
-
   public graph = {
     data: [],
     layout: {
@@ -29,34 +21,34 @@ export class AppComponent {
     const file = event.target.files[0];
 
     const fileReader = new FileReader();
-    fileReader.onload = (e) => {
-      this.arrayBuffer = fileReader.result;
-      var data = new Uint8Array(this.arrayBuffer);
+    fileReader.onload = () => {
+      let arrayBuffer = fileReader.result as ArrayBuffer;
+      var data = new Uint8Array(arrayBuffer);
       var arr = new Array();
       for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
       var bstr = arr.join("");
       var workbook = XLSX.read(bstr, { type: 'binary', cellDates: true, cellNF: false, cellText: false });
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
-      this.sheetData = XLSX.utils.sheet_to_json(worksheet, { dateNF: "YYYY-MM-DD" })
+      const sheetData = XLSX.utils.sheet_to_json(worksheet, { dateNF: "YYYY-MM-DD" })
 
-      this.x = [];
-      this.y = [];
-      this.labels = [];
+      const x = [];
+      const y = [];
+      const labels = [];
 
-      for (let entry of this.sheetData) {
-        this.x.push(entry['Fertigstellungszeit']);
-        this.y.push(entry['What is your mood today?']);
+      for (let entry of sheetData) {
+        x.push(entry['Fertigstellungszeit']);
+        y.push(entry['What is your mood today?']);
         let label = entry['Name'] + ': ' + entry['What made you feel that way?']
-        this.labels.push(label);
+        labels.push(label);
       }
       const trace = {
-        x: this.x,
-        y: this.y,
+        x: x,
+        y: y,
         textposition: 'top center',
         mode: 'markers',
         type: 'scatter',
-        text: this.labels
+        text: labels
       }
       this.graph.data = [trace];
     }

@@ -15,6 +15,9 @@ export class AppComponent {
       hovermode: 'closest'
     }
   };
+  public config = {
+    displayModeBar: false
+  }
 
   public fileChanged(event): void {
 
@@ -46,7 +49,7 @@ export class AppComponent {
         x: x,
         y: y,
         textposition: 'top center',
-        mode: 'markers',
+        mode: 'markers+text',
         type: 'scatter',
         text: labels
       }

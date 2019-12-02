@@ -18,7 +18,10 @@ export class AppComponent {
   labels: Array<any>;
 
   public graph = {
-    data: []
+    data: [],
+    layout: {
+      hovermode: 'closest'
+    }
 };
 
   // @ViewChild("Graph", { static: true })

@@ -22,11 +22,7 @@ export class AppComponent {
     layout: {
       hovermode: 'closest'
     }
-};
-
-  // @ViewChild("Graph", { static: true })
-  // private Graph: ElementRef; 
-
+  };
 
   public fileChanged(event): void {
 
@@ -39,16 +35,16 @@ export class AppComponent {
       var arr = new Array();
       for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
       var bstr = arr.join("");
-      var workbook = XLSX.read(bstr, {type:'binary', cellDates:true, cellNF: false, cellText:false});
+      var workbook = XLSX.read(bstr, { type: 'binary', cellDates: true, cellNF: false, cellText: false });
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
-      this.sheetData = XLSX.utils.sheet_to_json(worksheet, {dateNF:"YYYY-MM-DD"})
+      this.sheetData = XLSX.utils.sheet_to_json(worksheet, { dateNF: "YYYY-MM-DD" })
 
       this.x = [];
       this.y = [];
       this.labels = [];
 
-      for(let entry of this.sheetData)  {
+      for (let entry of this.sheetData) {
         this.x.push(entry['Fertigstellungszeit']);
         this.y.push(entry['What is your mood today?']);
         let label = entry['Name'] + ': ' + entry['What made you feel that way?']
